@@ -26,9 +26,30 @@ list_arg.extend(["-gpus", opt.gpus])
 
 print(list_arg)
 
+# Keep a log of training process
+log_list = []
+log_file = open('log.txt', 'w')
+
 # Run Darknet training
-darknet = subprocess.Popen(list_arg, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,bufsize=1)
+darknet = subprocess.Popen(list_arg, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,bufsize=0)
 with darknet.stdout:
     for line in iter(darknet.stdout.readline, b''):
         print line,
+        if line[-7:] == 'images\n':
+            log_file.write(line)
+            iteration, rest = line.split(':')
+            values = [value[1:].split(' ')[0] for value in rest.split(',')]
+            total_loss, average_loss, learning_rate, wall_time, total_images = values
+            #print('[Python wrapper] This is the {} iteration\n'.format(iteration)),
+            log_list.append({
+                'iteration': int(iteration),
+                'total_loss': float(total_loss),
+                'average_loss': float(average_loss),
+                'learning_rate': float(learning_rate),
+                'wall_time': float(wall_time),
+                'total_images': int(total_images)
+            })
+            if int(iteration) > 50:
+                darknet.terminate()
 darknet.wait()
+log_file.close()
