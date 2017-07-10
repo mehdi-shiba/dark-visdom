@@ -3,7 +3,16 @@ Darknet wrapper in Python with Visdom visualization
 
 - Works with Python 2.7.
 - Download and build Darknet first.
-- Use GPU flag in Darknet `Makefile` to get faster training.
+- Use GPU flag in Darknet `Makefile` to get faster training:
+
+```Makefile
+GPU=1
+CUDNN=1
+OPENCV=1
+DEBUG=1
+
+ARCH= -gencode arch=compute_61,code=[sm_61,compute_61]
+```
 
 ## To do
 - [ ] Python wrapper for Darknet training using `subprocess.Popen`
