@@ -8,11 +8,13 @@ Darknet wrapper in Python with Visdom visualization
 ```Makefile
 GPU=1
 CUDNN=1
-OPENCV=1
+OPENCV=0
 DEBUG=1
 
 ARCH= -gencode arch=compute_61,code=[sm_61,compute_61]
 ```
+
+CUDNN is faster but uses more memory on your GPU. OpenCV not really required for training. Debug in case Darknet dumps core.
 
 ## To do
 - [ ] Python wrapper for Darknet training using `subprocess.Popen`
