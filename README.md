@@ -19,5 +19,5 @@ CUDNN is faster but uses more memory on your GPU. OpenCV not really required for
 ## To do
 - [x] Python wrapper for Darknet training using `subprocess.Popen`
 - [x] Log output from Darknet stdout
-- [ ] Plot learning curves with Visdom
+- [x] Plot learning curves with Visdom
 - [ ] Implement early stopping

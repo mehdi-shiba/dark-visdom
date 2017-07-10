@@ -30,6 +30,22 @@ print(list_arg)
 log_list = []
 log_file = open('darknet_log.csv', 'w')
 log_file.write('iteration, total_loss, average_loss, learning_rate, wall_time, total_images\n')
+
+# Start visdom for plotting
+viz = visdom.Visdom(env='Darknet')
+win = viz.line(Y=np.column_stack(([0],[0])), X=None, env='Darknet', opts=dict(
+        #fillarea=True,
+        legend=['Total loss', 'Average loss'],
+        #width=400,
+        #height=400,
+        xlabel='Iterations',
+        ylabel='Loss',
+        title='Darknet Learning Curve',
+        marginleft=80,
+        marginright=80,
+        marginbottom=80,
+        margintop=80))
+
 # Run Darknet training
 darknet = subprocess.Popen(list_arg, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,bufsize=0)
 with darknet.stdout:
@@ -50,7 +66,10 @@ with darknet.stdout:
                 'total_images': int(total_images)
             })
             log_file.write('{},{},{},{},{},{}\n'.format(iteration,total_loss,average_loss,learning_rate,wall_time,total_images))
-            if int(iteration) > 20:
-                darknet.terminate()
+            viz.updateTrace(X=np.column_stack(([int(iteration)],[int(iteration)])),
+                            Y=np.column_stack(([float(total_loss)], [float(average_loss)])),
+                            win=win)
+            # if int(iteration) > 200:
+            #     darknet.terminate()
 darknet.wait()
 log_file.close()
