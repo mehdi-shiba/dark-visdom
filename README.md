@@ -17,7 +17,7 @@ ARCH= -gencode arch=compute_61,code=[sm_61,compute_61]
 CUDNN is faster but uses more memory on your GPU. OpenCV not really required for training. Debug in case Darknet dumps core.
 
 ## To do
-- [ ] Python wrapper for Darknet training using `subprocess.Popen`
+- [x] Python wrapper for Darknet training using `subprocess.Popen`
 - [ ] Log output from Darknet stdout
 - [ ] Plot learning curves with Visdom
 - [ ] Implement early stopping
